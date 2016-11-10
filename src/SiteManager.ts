@@ -13,10 +13,11 @@ export interface SiteOptions {
 }
 
 export class SiteManager {
-	public add(options: SiteOptions): Q.Promise<number> {
+
+	public add(options: SiteOptions, server?: AppCmd.RunnerServer): Q.Promise<number> {
 		vsts.debug("Creating site...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner();
+		var toolRunner = AppCmd.createAppCmdToolRunner(server);
 		toolRunner.arg("add site");
 		toolRunner.arg("/name:" + options.name);
 		toolRunner.arg("/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
@@ -25,40 +26,40 @@ export class SiteManager {
 		return toolRunner.exec();
 	}
 
-	public remove(name: string): Q.Promise<number> {
+	public remove(name: string, server?: AppCmd.RunnerServer): Q.Promise<number> {
 		vsts.debug("Deleting site...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner();
+		var toolRunner = AppCmd.createAppCmdToolRunner(server);
 		toolRunner.arg("delete site");
 		toolRunner.arg("/site.name:" + name);
 
 		return toolRunner.exec();
 	}
 
-	public start(name: string): Q.Promise<number> {
+	public start(name: string, server?: AppCmd.RunnerServer): Q.Promise<number> {
 		vsts.debug("Starting site...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner();
+		var toolRunner = AppCmd.createAppCmdToolRunner(server);
 		toolRunner.arg("start site");
 		toolRunner.arg("/site.name:" + name);
 
 		return toolRunner.exec();
 	}
 
-	public stop(name: string): Q.Promise<number> {
+	public stop(name: string, server?: AppCmd.RunnerServer): Q.Promise<number> {
 		vsts.debug("Stopping site...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner();
+		var toolRunner = AppCmd.createAppCmdToolRunner(server);
 		toolRunner.arg("stop site");
 		toolRunner.arg("/site.name:" + name);
 
 		return toolRunner.exec();
 	}
 
-	public exists(name: string): Q.Promise<boolean> {
+	public exists(name: string, server?: AppCmd.RunnerServer): Q.Promise<boolean> {
 		vsts.debug("Checking if site exists...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner();
+		var toolRunner = AppCmd.createAppCmdToolRunner(server);
 		toolRunner.arg("list site");
 		toolRunner.arg("/name:" + name);
 

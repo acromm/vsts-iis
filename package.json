@@ -3,16 +3,18 @@
   "version": "0.4.0",
   "description": "IIS AppCmd wrapper for VSTS",
   "dependencies": {
+    "typescript": "^2.0.8",
     "vsts-task-lib": "^0.5.10"
   },
   "devDependencies": {
+    "del": "^2.2.0",
     "gulp": "^3.8.11",
-    "gulp-install": "^0.6.0",
-    "gulp-debug": "^2.1.2",
-    "gulp-typescript": "^2.11.0",
     "gulp-concat": "^2.6.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-install": "^0.6.0",
+    "gulp-typescript": "^3.1.2",
     "merge2": "^1.0.1",
-    "del": "^2.2.0"
+    "typescript": "^2.0.8"
   },
   "homepage": "https://github.com/ChristopherHaws/vsts-iis",
   "author": "Christopher Haws",
