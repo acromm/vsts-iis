@@ -12,7 +12,7 @@ export interface RunnerServer {
 export function createAppCmdToolRunner(server?: RunnerServer): toolRunner.ToolRunner {
 	let appCmdPath = "";
 	let psExecCmdPath = process.env["windir"] + "\\psExec.exe";
-	let toolRunner;
+	let toolRunner : toolRunner.ToolRunner;
 	let tempAppCmdPath = "";
 
 	if (server.isRemote) {
