@@ -11,12 +11,16 @@ export interface RunnerServer {
 
 export function createAppCmdToolRunner(server?: RunnerServer): toolRunner.ToolRunner {
 	let appCmdPath = "";
-	let psExecCmdPath = process.env["windir"] + "\\psExec.exe -s -u " + server.username + " -p " + server.password + " \\\\" + server.host;
+	let psExecCmdPath = process.env["windir"] + "\\psExec.exe";
 
-	if (os.arch() === "x64") {
-		appCmdPath = ((server && server.isRemote) ? psExecCmdPath : "") + " " + process.env["windir"] + "\\syswow64\\inetsrv\\appcmd.exe";
+	if (server.isRemote) {
+		if (os.arch() === "x64") {
+			appCmdPath = process.env["windir"] + "\\syswow64\\inetsrv\\appcmd.exe";
+		} else {
+			appCmdPath = process.env["windir"] + "\\system32\\inetsrv\\appcmd.exe";
+		}
 	} else {
-		appCmdPath = ((server && server.isRemote) ? psExecCmdPath : "") + " " + process.env["windir"] + "\\system32\\inetsrv\\appcmd.exe";
+		appCmdPath = psExecCmdPath;
 	}
 
 	return vsts.createToolRunner(appCmdPath);

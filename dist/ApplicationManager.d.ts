@@ -5,9 +5,11 @@ export interface ApplicationOptions {
     physicalPath: string;
 }
 export declare class ApplicationManager {
-    add(options: ApplicationOptions, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    setAppPool(appName: string, appPoolName: string, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    setWindowsAuthentication(appPath: string, enable: boolean, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    setAnonymousAuthentication(appPath: string, enable: boolean, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    exists(name: string, server?: AppCmd.RunnerServer): Q.Promise<boolean>;
+    private server;
+    constructor(server: AppCmd.RunnerServer);
+    add(options: ApplicationOptions): Q.Promise<number>;
+    setAppPool(appName: string, appPoolName: string): Q.Promise<number>;
+    setWindowsAuthentication(appPath: string, enable: boolean): Q.Promise<number>;
+    setAnonymousAuthentication(appPath: string, enable: boolean): Q.Promise<number>;
+    exists(name: string): Q.Promise<boolean>;
 }

@@ -9,9 +9,11 @@ export interface SiteOptions {
     path?: string;
 }
 export declare class SiteManager {
-    add(options: SiteOptions, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    remove(name: string, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    start(name: string, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    stop(name: string, server?: AppCmd.RunnerServer): Q.Promise<number>;
-    exists(name: string, server?: AppCmd.RunnerServer): Q.Promise<boolean>;
+    private server;
+    constructor(server: AppCmd.RunnerServer);
+    add(options: SiteOptions): Q.Promise<number>;
+    remove(name: string): Q.Promise<number>;
+    start(name: string): Q.Promise<number>;
+    stop(name: string): Q.Promise<number>;
+    exists(name: string): Q.Promise<boolean>;
 }

@@ -10,10 +10,16 @@ export interface ApplicationOptions {
 
 export class ApplicationManager {
 
-	public add(options: ApplicationOptions, server?: AppCmd.RunnerServer) {
+	private server: AppCmd.RunnerServer;
+
+	constructor (server: AppCmd.RunnerServer) {
+		this.server = server;
+	}
+
+	public add(options: ApplicationOptions) {
 		vsts.debug("Adding app folder...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner(server);
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg('add app');
 		toolRunner.arg('/site.name:"' + options.name + '"');
 		toolRunner.arg('/path:/' + options.virtualPath);
@@ -22,10 +28,10 @@ export class ApplicationManager {
 		return toolRunner.exec();
 	}
 
-	public setAppPool(appName: string, appPoolName: string, server?: AppCmd.RunnerServer): Q.Promise<number> {
+	public setAppPool(appName: string, appPoolName: string): Q.Promise<number> {
 		vsts.debug("Setting the AppPool for app...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner(server);
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg('set app');
 		toolRunner.arg('/app.name:"' + appName + '"');
 		toolRunner.arg('/applicationPool:' + appPoolName);
@@ -33,10 +39,10 @@ export class ApplicationManager {
 		return toolRunner.exec();
 	}
 
-	public setWindowsAuthentication(appPath: string, enable: boolean, server?: AppCmd.RunnerServer): Q.Promise<number> {
+	public setWindowsAuthentication(appPath: string, enable: boolean): Q.Promise<number> {
 		vsts.debug("Setting the AppPool for app...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner(server);
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg('set config');
 		toolRunner.arg('"' + appPath + '"');
 		toolRunner.arg('/section:windowsAuthentication');
@@ -45,10 +51,10 @@ export class ApplicationManager {
 		return toolRunner.exec();
 	}
 
-	public setAnonymousAuthentication(appPath: string, enable: boolean, server?: AppCmd.RunnerServer): Q.Promise<number> {
+	public setAnonymousAuthentication(appPath: string, enable: boolean): Q.Promise<number> {
 		vsts.debug("Setting the AppPool for app...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner(server);
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg('set config');
 		toolRunner.arg('"' + appPath + '"');
 		toolRunner.arg('/section:anonymousAuthentication');
@@ -57,10 +63,10 @@ export class ApplicationManager {
 		return toolRunner.exec();
 	}
 
-	public exists(name: string, server?: AppCmd.RunnerServer): Q.Promise<boolean> {
+	public exists(name: string): Q.Promise<boolean> {
 		vsts.debug("Checking if site app...");
 
-		var toolRunner = AppCmd.createAppCmdToolRunner(server);
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg("list app");
 		toolRunner.arg("/name:" + name);
 
