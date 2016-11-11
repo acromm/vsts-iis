@@ -12,6 +12,8 @@ export interface RunnerServer {
 export function createAppCmdToolRunner(server?: RunnerServer): toolRunner.ToolRunner {
 	let appCmdPath = "";
 	let psExecCmdPath = process.env["windir"] + "\\psExec.exe";
+	let toolRunner;
+	let tempAppCmdPath = "";
 
 	if (server.isRemote) {
 		if (os.arch() === "x64") {
@@ -20,8 +22,16 @@ export function createAppCmdToolRunner(server?: RunnerServer): toolRunner.ToolRu
 			appCmdPath = process.env["windir"] + "\\system32\\inetsrv\\appcmd.exe";
 		}
 	} else {
-		appCmdPath = psExecCmdPath;
+		tempAppCmdPath = psExecCmdPath;
 	}
+	toolRunner = vsts.createToolRunner(tempAppCmdPath);
 
-	return vsts.createToolRunner(appCmdPath);
+	if (server.isRemote) {
+			toolRunner.arg("-s");
+			toolRunner.arg("-u " + this.server.username);
+			toolRunner.arg("-p " + this.server.password);
+			toolRunner.arg(this.server.host);
+			toolRunner.arg(appCmdPath);
+	}
+	return toolRunner;
 }

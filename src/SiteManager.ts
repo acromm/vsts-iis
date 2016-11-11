@@ -24,6 +24,7 @@ export class SiteManager {
 		vsts.debug("Creating site...");
 
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+
 		toolRunner.arg("add site");
 		toolRunner.arg("/name:" + options.name);
 		toolRunner.arg("/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
@@ -66,6 +67,7 @@ export class SiteManager {
 		vsts.debug("Checking if site exists...");
 
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+		
 		toolRunner.arg("list site");
 		toolRunner.arg("/name:" + name);
 
