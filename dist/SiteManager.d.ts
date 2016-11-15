@@ -9,7 +9,7 @@ export interface SiteOptions {
     path?: string;
 }
 export declare class SiteManager {
-    private server;
+    server: AppCmd.RunnerServer;
     constructor(server: AppCmd.RunnerServer);
     add(options: SiteOptions): Q.Promise<number>;
     remove(name: string): Q.Promise<number>;

@@ -38,6 +38,7 @@ var SiteManager = (function () {
     };
     SiteManager.prototype.exists = function (name) {
         vsts.debug("Checking if site exists...");
+        vsts.debug(this.server.toString());
         var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
         toolRunner.arg("list site");
         toolRunner.arg("/name:" + name);

@@ -14,7 +14,7 @@ export interface SiteOptions {
 
 export class SiteManager {
 
-	private server: AppCmd.RunnerServer;
+	public server: AppCmd.RunnerServer;
 
 	constructor (server: AppCmd.RunnerServer) {
 		this.server = server;
@@ -65,9 +65,9 @@ export class SiteManager {
 
 	public exists(name: string): Q.Promise<boolean> {
 		vsts.debug("Checking if site exists...");
-
+		vsts.debug(this.server.toString());
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
-		
+
 		toolRunner.arg("list site");
 		toolRunner.arg("/name:" + name);
 

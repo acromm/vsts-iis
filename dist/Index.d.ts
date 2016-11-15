@@ -1,12 +1,7 @@
 import { SiteManager } from "./SiteManager";
 import { AppPoolManager } from "./AppPoolManager";
 import { ApplicationManager } from "./ApplicationManager";
-export interface RunnerServer {
-    isRemote: boolean;
-    host?: string;
-    username?: string;
-    password?: string;
-}
+import { RunnerServer } from "./AppCmd";
 export declare class PsExec {
     private server;
     constructor(server?: RunnerServer);

@@ -6,23 +6,19 @@ function createAppCmdToolRunner(server) {
     var psExecCmdPath = process.env["windir"] + "\\psExec.exe";
     var toolRunner;
     var tempAppCmdPath = "";
-    if (server.isRemote) {
-        if (os.arch() === "x64") {
-            appCmdPath = process.env["windir"] + "\\syswow64\\inetsrv\\appcmd.exe";
-        }
-        else {
-            appCmdPath = process.env["windir"] + "\\system32\\inetsrv\\appcmd.exe";
-        }
+    if (os.arch() === "x64") {
+        appCmdPath = process.env["windir"] + "\\syswow64\\inetsrv\\appcmd.exe";
     }
     else {
-        tempAppCmdPath = psExecCmdPath;
+        appCmdPath = process.env["windir"] + "\\system32\\inetsrv\\appcmd.exe";
     }
+    tempAppCmdPath = (server.isRemote) ? psExecCmdPath : appCmdPath;
     toolRunner = vsts.createToolRunner(tempAppCmdPath);
     if (server.isRemote) {
         toolRunner.arg("-s");
-        toolRunner.arg("-u " + this.server.username);
-        toolRunner.arg("-p " + this.server.password);
-        toolRunner.arg(this.server.host);
+        toolRunner.arg("-u " + server.username);
+        toolRunner.arg("-p " + server.password);
+        toolRunner.arg(server.host);
         toolRunner.arg(appCmdPath);
     }
     return toolRunner;
