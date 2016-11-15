@@ -15,6 +15,15 @@ var SiteManager = (function () {
         toolRunner.argIf(options.path, '/physicalPath:"' + options.path + '"');
         return toolRunner.exec();
     };
+    SiteManager.prototype.update = function (options) {
+        vsts.debug("Updating site...");
+        var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+        toolRunner.arg("set site");
+        toolRunner.arg(options.name);
+        toolRunner.arg("/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
+        toolRunner.argIf(options.path, '/physicalPath:"' + options.path + '"');
+        return toolRunner.exec();
+    };
     SiteManager.prototype.remove = function (name) {
         vsts.debug("Deleting site...");
         var toolRunner = AppCmd.createAppCmdToolRunner(this.server);

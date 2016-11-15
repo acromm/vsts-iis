@@ -33,6 +33,19 @@ export class SiteManager {
 		return toolRunner.exec();
 	}
 
+	public update(options: SiteOptions): Q.Promise<number> {
+		vsts.debug("Updating site...");
+
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+
+		toolRunner.arg("set site");
+		toolRunner.arg(options.name);
+		toolRunner.arg("/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
+		toolRunner.argIf(options.path, '/physicalPath:"' + options.path + '"');
+
+		return toolRunner.exec();
+	}
+
 	public remove(name: string): Q.Promise<number> {
 		vsts.debug("Deleting site...");
 
