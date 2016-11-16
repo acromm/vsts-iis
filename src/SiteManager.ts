@@ -26,7 +26,7 @@ export class SiteManager {
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 
 		toolRunner.arg("add site");
-		toolRunner.arg("/name:" + options.name);
+		toolRunner.arg("/name:" + '"' + options.name + '"');
 		toolRunner.arg("/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
 		toolRunner.argIf(options.path, '/physicalPath:"' + options.path + '"');
 
@@ -39,9 +39,22 @@ export class SiteManager {
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 
 		toolRunner.arg("set site");
-		toolRunner.arg(options.name);
-		toolRunner.arg("/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
+		toolRunner.arg('"' + options.name + '"');
+		toolRunner.argIf(options.bindings && options.protocol && options.port && options.host, "/bindings:" + (options.bindings || (options.protocol + '://' + options.host + ':' + options.port)));
 		toolRunner.argIf(options.path, '/physicalPath:"' + options.path + '"');
+
+		return toolRunner.exec();
+	}
+
+	public setAppPool(name: string, appPoolName: string) {
+		//appcmd set site /site.name:example.com /[path='/'].applicationPool:Sales
+		vsts.debug("Setting Site Application Pool...");
+
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+
+		toolRunner.arg("set site");
+		toolRunner.arg('/site.name:' + name);
+		toolRunner.arg("/[path='/'].applicationPool:"+ appPoolName);
 
 		return toolRunner.exec();
 	}
@@ -51,7 +64,7 @@ export class SiteManager {
 
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg("delete site");
-		toolRunner.arg("/site.name:" + name);
+		toolRunner.arg("/site.name:" + '"' + name + '"');
 
 		return toolRunner.exec();
 	}
@@ -61,7 +74,7 @@ export class SiteManager {
 
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg("start site");
-		toolRunner.arg("/site.name:" + name);
+		toolRunner.arg("/site.name:" + '"' + name + '"');
 
 		return toolRunner.exec();
 	}
@@ -71,18 +84,17 @@ export class SiteManager {
 
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg("stop site");
-		toolRunner.arg("/site.name:" + name);
+		toolRunner.arg("/site.name:" + '"' + name + '"');
 
 		return toolRunner.exec();
 	}
 
 	public exists(name: string): Q.Promise<boolean> {
 		vsts.debug("Checking if site exists...");
-		vsts.debug(this.server.toString());
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 
 		toolRunner.arg("list site");
-		toolRunner.arg("/name:" + name);
+		toolRunner.arg("/name:" + '"' + name + '"');
 
 		var defered = Q.defer<boolean>();
 
