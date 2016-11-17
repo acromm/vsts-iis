@@ -47,7 +47,6 @@ export class SiteManager {
 	}
 
 	public setAppPool(name: string, appPoolName: string) {
-		//appcmd set site /site.name:example.com /[path='/'].applicationPool:Sales
 		vsts.debug("Setting Site Application Pool...");
 
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
