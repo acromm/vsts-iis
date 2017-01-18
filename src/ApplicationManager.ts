@@ -39,6 +39,59 @@ export class ApplicationManager {
 		return toolRunner.exec();
 	}
 
+	public removeHttpHandler(handlerName:string, siteName:string, configSection:string) {
+		vsts.debug("disabling http handler for site...");
+		// appcmd.exe set config /section:handlers /-[name=' string ']
+
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+		toolRunner.arg('set config');
+		toolRunner.arg('"' + siteName + '"');
+		toolRunner.arg(configSection);
+		toolRunner.arg('/-"[name=\'' + handlerName + '\']"');
+
+		return toolRunner.exec();
+	}
+
+	public removeHttpModule(moduleName:string, siteName:string) :Q.Promise<number> {
+		//appcmd delete module /name:SubscriptionModule /app.name:test.cmsmobile.mobi/
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+		toolRunner.arg('delete module');
+		toolRunner.arg('/name:' + moduleName);
+		toolRunner.arg('/app.name:' + siteName);
+
+		return toolRunner.exec();
+	}
+
+	public enableHttpModule(moduleName:string, siteName:string, type:string) :Q.Promise<number> {
+		//appcmd add module /name:SubscriptionModule /type:"UDist.SubscriptionModule, SubscriptionModule" /app.name:test.cmsmobile.mobi/
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+		toolRunner.arg('add module');
+		toolRunner.arg('/name:' + moduleName);
+		toolRunner.arg('/type:"' + type + '"');
+		toolRunner.arg('/app.name:' + siteName);
+
+		return toolRunner.exec();
+	}
+
+	public enableHttpHandler(handlerName:string, siteName:string, configSection:string, path:string, verb:string, type:string) : Q.Promise<number> {
+		vsts.debug("enabling http handler for site...");
+
+		/*
+			appcmd.exe 	set config
+		 							"test.cmsmobile.mobi"
+									-section:system.webServer/handlers
+									/+"[name='FPPortalHandler',path='/',verb='GET',type='FeaturePhonePortal.FPPortalHandler']"
+	  */
+
+		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+		toolRunner.arg('set config');
+		toolRunner.arg('"' + siteName + '"');
+		toolRunner.arg(configSection);
+		toolRunner.arg('/+"[name=\'' + handlerName + '\',path=\'/\',verb=\''+ verb + '\',type=\'' + type + '\']"');
+		return toolRunner.exec();
+
+	}
+
 	public setWindowsAuthentication(appPath: string, enable: boolean): Q.Promise<number> {
 		vsts.debug("Setting the AppPool for app...");
 

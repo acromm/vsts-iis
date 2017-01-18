@@ -22,6 +22,39 @@ var ApplicationManager = (function () {
         toolRunner.arg('/applicationPool:' + appPoolName);
         return toolRunner.exec();
     };
+    ApplicationManager.prototype.removeHttpHandler = function (handlerName, siteName, configSection) {
+        vsts.debug("disabling http handler for site...");
+        var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+        toolRunner.arg('set config');
+        toolRunner.arg('"' + siteName + '"');
+        toolRunner.arg(configSection);
+        toolRunner.arg('/-"[name=\'' + handlerName + '\']"');
+        return toolRunner.exec();
+    };
+    ApplicationManager.prototype.removeHttpModule = function (moduleName, siteName) {
+        var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+        toolRunner.arg('delete module');
+        toolRunner.arg('/name:' + moduleName);
+        toolRunner.arg('/app.name:' + siteName);
+        return toolRunner.exec();
+    };
+    ApplicationManager.prototype.enableHttpModule = function (moduleName, siteName, type) {
+        var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+        toolRunner.arg('add module');
+        toolRunner.arg('/name:' + moduleName);
+        toolRunner.arg('/type:"' + type + '"');
+        toolRunner.arg('/app.name:' + siteName);
+        return toolRunner.exec();
+    };
+    ApplicationManager.prototype.enableHttpHandler = function (handlerName, siteName, configSection, path, verb, type) {
+        vsts.debug("enabling http handler for site...");
+        var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
+        toolRunner.arg('set config');
+        toolRunner.arg('"' + siteName + '"');
+        toolRunner.arg(configSection);
+        toolRunner.arg('/+"[name=\'' + handlerName + '\',path=\'/\',verb=\'' + verb + '\',type=\'' + type + '\']"');
+        return toolRunner.exec();
+    };
     ApplicationManager.prototype.setWindowsAuthentication = function (appPath, enable) {
         vsts.debug("Setting the AppPool for app...");
         var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
