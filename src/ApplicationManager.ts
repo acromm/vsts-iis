@@ -56,7 +56,7 @@ export class ApplicationManager {
 		//appcmd delete module /name:SubscriptionModule /app.name:test.cmsmobile.mobi/
 		var toolRunner = AppCmd.createAppCmdToolRunner(this.server);
 		toolRunner.arg('delete module');
-		toolRunner.arg('/name:' + moduleName);
+		toolRunner.arg('/module.name:' + moduleName);
 		toolRunner.arg('/app.name:' + siteName);
 
 		return toolRunner.exec();

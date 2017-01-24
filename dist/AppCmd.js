@@ -15,7 +15,7 @@ function createAppCmdToolRunner(server) {
     tempAppCmdPath = (server.isRemote) ? psExecCmdPath : appCmdPath;
     toolRunner = vsts.createToolRunner(tempAppCmdPath);
     if (server.isRemote) {
-        toolRunner.arg("-i");
+        toolRunner.arg("-s");
         toolRunner.arg("-u " + server.username);
         toolRunner.arg("-p " + server.password);
         toolRunner.arg(server.host);
